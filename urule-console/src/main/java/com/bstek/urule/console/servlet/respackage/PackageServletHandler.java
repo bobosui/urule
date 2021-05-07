@@ -137,7 +137,7 @@ public class PackageServletHandler extends RenderPageServletHandler {
 		outputStream.close();
 	}
 	
-	private void buildSheet(SXSSFWorkbook wb,VariableCategory vc,XSSFCellStyle style){
+	public void buildSheet(SXSSFWorkbook wb,VariableCategory vc,XSSFCellStyle style){
 		String name=vc.getName();
 		Sheet sheet=wb.createSheet(name);
 		Row row=sheet.createRow(0);
@@ -174,7 +174,7 @@ public class PackageServletHandler extends RenderPageServletHandler {
 	}
 
 	@SuppressWarnings("resource")
-	private List<Map<String,Object>> parseExcel(InputStream stream) throws Exception {
+	public List<Map<String,Object>> parseExcel(InputStream stream) throws Exception {
 		List<Map<String,Object>> mapList=new ArrayList<Map<String,Object>>();
 		XSSFWorkbook wb = new XSSFWorkbook(stream);
 		for (int i = 0; i < wb.getNumberOfSheets(); i++) {
@@ -191,7 +191,7 @@ public class PackageServletHandler extends RenderPageServletHandler {
 		return mapList;
 	}
 	
-	private List<Map<String,String>> buildVariables(XSSFSheet sheet){
+	public List<Map<String,String>> buildVariables(XSSFSheet sheet){
 		Map<Integer,String> headerMap=new HashMap<Integer,String>();
 		List<Map<String,String>> mapList=new ArrayList<Map<String,String>>();
 		int totalRow=sheet.getLastRowNum();
@@ -286,7 +286,7 @@ public class PackageServletHandler extends RenderPageServletHandler {
 		writeObjectToJson(resp, vcs);
 	}
 	
-	private KnowledgeBase buildKnowledgeBase(HttpServletRequest req) throws IOException{
+	public KnowledgeBase buildKnowledgeBase(HttpServletRequest req) throws IOException{
 		String files=req.getParameter("files");
 		files=Utils.decodeURL(files);
 		ResourceBase resourceBase=knowledgeBuilder.newResourceBase();
@@ -318,7 +318,7 @@ public class PackageServletHandler extends RenderPageServletHandler {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private List<VariableCategory> mapToVariableCategories(List<Map<String,Object>> mapList){
+	public List<VariableCategory> mapToVariableCategories(List<Map<String,Object>> mapList){
 		List<VariableCategory> list=new ArrayList<VariableCategory>();
 		for(Map<String,Object> map:mapList){
 			VariableCategory category=new VariableCategory();
@@ -465,7 +465,7 @@ public class PackageServletHandler extends RenderPageServletHandler {
 	
 	
 	@SuppressWarnings("unchecked")
-	private void buildResult(List<Map<String,Object>> list,String categoryName,Object fact){
+	public void buildResult(List<Map<String,Object>> list,String categoryName,Object fact){
 		List<Object> rowList=null;
 		for(Map<String,Object> map:list){
 			if(map.get("name").equals(categoryName)){
@@ -484,7 +484,7 @@ public class PackageServletHandler extends RenderPageServletHandler {
 		rowList.add(fact);
 	}
 
-	private Object fetchFact(Map<String,List<Object>> factMap,List<String> keyList,int i,int objectIndex){
+	public Object fetchFact(Map<String,List<Object>> factMap,List<String> keyList,int i,int objectIndex){
 		if(i>keyList.size()){
 			return null;
 		}
@@ -637,7 +637,7 @@ public class PackageServletHandler extends RenderPageServletHandler {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private List<GeneralEntity> buildList(String value){
+	public List<GeneralEntity> buildList(String value){
 		try {
 			List<GeneralEntity> result=new ArrayList<GeneralEntity>();
 			ObjectMapper mapper=new ObjectMapper();
@@ -660,7 +660,7 @@ public class PackageServletHandler extends RenderPageServletHandler {
 		}
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private Set<GeneralEntity> buildSet(String value){
+	public Set<GeneralEntity> buildSet(String value){
 		try {
 			Set<GeneralEntity> result=new HashSet<GeneralEntity>();
 			ObjectMapper mapper=new ObjectMapper();
@@ -683,7 +683,7 @@ public class PackageServletHandler extends RenderPageServletHandler {
 		}
 	}
 	
-	private void instanceChildObject(Object obj,String propertyName){
+	public void instanceChildObject(Object obj,String propertyName){
 		int pointIndex=propertyName.indexOf(".");
 		if(pointIndex==-1){
 			return;
@@ -705,7 +705,7 @@ public class PackageServletHandler extends RenderPageServletHandler {
 	}
 	
 
-	private void buildRulesName(List<RuleInfo> firedRules, StringBuffer sb) {
+	public void buildRulesName(List<RuleInfo> firedRules, StringBuffer sb) {
 		sb.append("：");
 		int i=0;
 		for(RuleInfo rule:firedRules){
@@ -717,7 +717,7 @@ public class PackageServletHandler extends RenderPageServletHandler {
 		}
 	}
 	
-	private void buildVariableValue(Object object,Variable var){
+	public void buildVariableValue(Object object,Variable var){
 		String name=var.getName();
 		Object value=Utils.getObjectProperty(object, name);
 		if(value!=null){
